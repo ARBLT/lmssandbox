@@ -4,26 +4,45 @@ const fs = require('fs');
 const cmd=require('node-cmd');
 const execSync=require('child_process').execSync;
 const child_process=require('child_process');
+const { app, BrowserWindow } = require('electron')
+
+const createWindow = () => {
+    const win = new BrowserWindow({
+      width: 800,
+      height: 600
+    })
+  
+    win.loadFile('./public/index.html')
+  }
 
 
-const app=express();
+  app.whenReady().then(() => {
+    createWindow()
+
+    app.on('window-all-closed', () => {
+        if (process.platform !== 'darwin') app.quit()
+      })
+
+  })
+
+const eapp=express();
 
 //Define paths for Static and Dynamic Assets
-const publicDirFolder=path.join(__dirname,'../public');
+const publicDirFolder=path.join(__dirname,'/public');
 const packageFolder=path.join(publicDirFolder,'/packages');
 
 
 //Set the paths for static files to serve
-app.use(express.static(publicDirFolder))
-app.use(express.json());
+eapp.use(express.static(publicDirFolder))
+eapp.use(express.json());
 
 
 
-app.get('',(req,res)=>{
+eapp.get('',(req,res)=>{
     res.render('index');
 });
 
-app.post('/moveCourse',async (req,res)=>{
+eapp.post('/moveCourse',async (req,res)=>{
     
             let coursePath=req.body.folder;
             console.log(coursePath)
@@ -37,11 +56,25 @@ app.post('/moveCourse',async (req,res)=>{
             }catch(e){
                 console.log(e);
             }
-            let ops='/S /F /I /E';
-            await moveDirectory(coursePath,fPath,ops);
-            res.send({
-                msg:'success'
-            });
+            try{
+                let ops='/S /F /I /E';
+                await new Promise(async(resolve)=>{
+                    await moveDirectory(coursePath,fPath,ops);
+                    resolve();
+                })
+
+                res.send({
+                    msg:'success'
+                });
+                
+            }catch(e){
+                console.log(e);
+                res.send({
+                    msg:'failed'
+                });
+            }
+           
+           
     });
 
 
@@ -65,6 +98,6 @@ const moveDirectory=async(src,dest,opts)=>{
 
 
 
-app.listen(3100,()=>{
+eapp.listen(3100,()=>{
     console.log("Server is up in 3100 port");
 })
