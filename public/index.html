@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCORM SandBoX</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="scripts/fakelms.js"></script>
+</head>
+<body>
+    <header>
+        <div><img src="https://assets.lntedutech.com/edutech_logo.svg" alt="" srcset=""></div>
+        <p>SCORM SanDBoX</p>
+        <form action="">
+            <label for="sourceFolder">Folder Path<input id="sourceFolder" type="text" placeholder="Package folder Path"/></label>
+            <label for="rootfile">File Name<input id="rootFile" type="text" placeholder="Root File Name"/></label>
+        
+            <button class="btn" id="submit">Submit</button>
+        </form>
+    </header>
+    <main>
+        <section id="playerContainer">
+            <iframe src="" id="player" frameborder="0" width="500" height="500"></iframe>
+        </section>
+        <aside id="event_data">
+            <header>SCORM Events</header>
+            <table id="event_table">
+                
+            </table>
+        </aside>
+    </main>
+   
+    <script src="scripts/script.js"></script>
+
+</body>
+</html>
